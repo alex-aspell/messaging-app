@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "description": "Welcome",
+        "template": "Welcome to {{company}}",
+        "dependencies": {
+            "companies": true,
+            "guests": false
+        }
+    },
+    {
+        "id": 2,
+        "description": "Greeting",
+        "template": "{{time}} {{firstName}}, and welcome to {{company}}! Room {{roomNumber}} is now ready you. Enjoy your stay, and let us know if you need anything.",
+        "dependencies": {
+            "companies": true,
+            "guests": true
+        }
+    },
+    {
+        "id": 3,
+        "description": "Checkout",
+        "template": "Your chechout time is {{time}}",
+        "dependencies": {
+            "companies": false,
+            "guests": true
+        }
+    }
+]
