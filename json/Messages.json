@@ -11,7 +11,7 @@
     {
         "id": 2,
         "description": "Greeting",
-        "template": "{{time}} {{firstName}}, and welcome to {{company}}! Room {{roomNumber}} is now ready you. Enjoy your stay, and let us know if you need anything.",
+        "template": "{{welcome}} {{firstName}}, and welcome to {{company}}! Room {{roomNumber}} is now ready you. Enjoy your stay, and let us know if you need anything.",
         "dependencies": {
             "companies": true,
             "guests": true
