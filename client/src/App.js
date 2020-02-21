@@ -29,26 +29,24 @@ function App() {
       setData({...data, messages: body.messages, companies: body.companies, guests: body.guests});
     }
 
-    function createWelcome() {
-      var today = new Date()
-      var curHr = today.getHours()
-  
-      if (curHr < 12) {
-        setTemplate({...template, welcome: "Good morning"});
-      } else if (curHr < 18) {
-        setTemplate({...template, welcome: "Good afternoon"});
-      } else {
-        setTemplate({...template, welcome: "Good evening"});
-      }
-    }
     fetchData();
-    createWelcome();
-  }, []);
+  }, []); 
 
-  function selectOption(id, option) {
-    let selected = data[option].find(item => item.id == id);
-    setTemplate({...template, ...selected});
-  } 
+  async function generateMessage() {
+    let payload = {
+      messages: data.message,
+      companies: data.company,
+      guests: data.guest
+    }
+
+    const response = await fetch('/post', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ payload }),
+    });
+  }
   
   return (
     <div className="App">
@@ -56,19 +54,19 @@ function App() {
         <h2>Message App</h2>
       </header>
       <div>
-        <select onChange={e => selectOption(e.target.value, "messages")}>
+        <select onChange={e => setData({...data, message: e.target.value})}>
           <option>Select a message</option>
           {data.messages.map(item => (
             <option value={item.id}>{item.description}</option>
           ))}
         </select>
-        <select onChange={e => selectOption(e.target.value, "companies")}>
+        <select onChange={e => setData({...data, company: e.target.value})}>
           <option>Select a company</option>
           {data.companies.map(item => (
             <option value={item.id}>{item.company}</option>
           ))}
         </select>
-        <select onChange={e => selectOption(e.target.value, "guests")}>
+        <select onChange={e => setData({...data, guest: e.target.value})}>
           <option>Select a guest</option>
           {data.guests.map(item => (
             <option value={item.id}>{item.firstName} {item.lastName}</option>
@@ -77,7 +75,7 @@ function App() {
         <button onClick={() => setData({...data, showCustom: true})}>
           Custom
         </button>
-        <button onClick={() => setData({...data, showTemplate: true})}>
+        <button onClick={() => generateMessage()}>
           Generate Message
         </button>
         {data.showCustom && 

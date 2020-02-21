@@ -1,26 +1,53 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mustache = require('mustache');
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const companies = require('./json/Companies.json');
 const guests = require('./json/Guests.json');
 const messages = require('./json/Messages.json');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+const dataFromJSON = {
+    messages: messages,
+    companies: companies,
+    guests: guests
+}
 
 app.get('/get/messages', (req, res) => {
-    const package = {
-        messages: messages,
-        companies: companies,
-        guests: guests
-    }
-  res.send( package );
+    res.send( dataFromJSON );
 });
 
-var mustache = require('mustache');
+app.post('/post', (req, res) => {
+    console.log(req.body);
+    res.send('received');
+});
+
+const selectedOptions = {};
+
+function createWelcome() {
+    var today = new Date()
+    var curHr = today.getHours()
+
+    if (curHr < 12) {
+        let welcome =  {welcome: "Good morning"};
+    } else if (curHr < 18) {
+        let welcome =  {welcome: "Good afternoon"};
+    } else {
+        let welcome =  {welcome: "Good evening"};
+    }
+}
+
+function selectOption(dataFromJSON, body) {
+    let selected = body.find(item => item.id == id);
+    setTemplate({...template, ...selected});
+  }
+
+createWelcome();
 
 var view = {
   title: "Joe",
