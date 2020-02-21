@@ -15,9 +15,10 @@ function App() {
     showCustom: false
   });
 
-  const [template, setTemplate] = useState({welcome: '', template: "Select message template"});
-
-  console.log('data', data);
+  const [template, setTemplate] = useState({
+    welcome: '', 
+    template: "Select message template"
+  });
   
   useEffect(() => {
     async function fetchData() {
@@ -48,11 +49,7 @@ function App() {
     let selected = data[option].find(item => item.id == id);
     setTemplate({...template, ...selected});
   } 
-
   
-
-  console.log('template', template);
-
   return (
     <div className="App">
       <header className="App-header">

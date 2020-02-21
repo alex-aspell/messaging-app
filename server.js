@@ -20,11 +20,20 @@ app.get('/get/messages', (req, res) => {
   res.send( package );
 });
 
-app.post('/post', (req, res) => {
-  console.log(req.body);
-//   res.send(
-//     `I received your POST request. This is what you sent me: ${req.body.post}`,
-//   );
-});
+var mustache = require('mustache');
+
+var view = {
+  title: "Joe",
+  calc: function() {
+    return 2 + 4;
+  }
+};
+
+var template = "{{title}} spends {{calc}}";
+
+var html = mustache.render(template, view);
+
+console.log('html', html);
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
