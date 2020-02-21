@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ReactMustache from 'react-mustache';
 import './App.css';
 
 function App() {
@@ -11,13 +10,10 @@ function App() {
     message: '',
     company: '',
     guest: '',
-    showTemplate: false,
-    showCustom: false
-  });
-
-  const [template, setTemplate] = useState({
-    welcome: '', 
-    template: "Select message template"
+    customTemplate: '',
+    finalizedTemplate: '',
+    showCustom: false,
+    showTemplate: false
   });
   
   useEffect(() => {
@@ -36,7 +32,8 @@ function App() {
     let payload = {
       messages: data.message,
       companies: data.company,
-      guests: data.guest
+      guests: data.guest,
+      template: data.customTemplate
     }
 
     const response = await fetch('/post', {
@@ -46,6 +43,9 @@ function App() {
       },
       body: JSON.stringify({ payload }),
     });
+    const body = await response.text();
+
+    setData({...data, finalizedTemplate: body });
   }
   
   return (
@@ -75,19 +75,19 @@ function App() {
         <button onClick={() => setData({...data, showCustom: true})}>
           Custom
         </button>
-        <button onClick={() => generateMessage()}>
-          Generate Message
-        </button>
         {data.showCustom && 
           <div>
-            <textarea onChange={e => setTemplate({...template, template: e.target.value})}/>
+            <textarea onChange={e => setData({...data, customTemplate: e.target.value})}/>
           </div>
         }
-        {data.showTemplate &&
-          <div>
-            <ReactMustache template={template.template} data={template} />
-          </div>
-        }
+        <div>
+          <button onClick={() => { generateMessage(); setData({...data, showTemplate: true})}}>
+            Generate Message
+          </button>
+        </div>
+        <div>
+          <p>{data.finalizedTemplate}</p>
+        </div>
       </div>
     </div>
   );
