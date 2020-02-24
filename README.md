@@ -15,7 +15,13 @@ Before you get started, make sure you have the following software installed on y
 
 `npm install`
 
+```
+cd client
+npm install
+```
+
 ## Running the App
+From Project root
 
 `npm run dev`
 
