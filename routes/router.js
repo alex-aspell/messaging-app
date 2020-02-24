@@ -19,7 +19,7 @@ router.get('/get/messages', (req, res) => {
 
 router.post('/post', (req, res) => {
     const selectedOptions = {};
-    let templateObject = selectOption(dataFromJSON, req.body.payload, selectedOptions);
+    let templateObject = createTemplateObject(dataFromJSON, req.body.payload, selectedOptions);
     
     let finalizedTemplate = mustache.render(templateObject.template, templateObject);
     
@@ -42,7 +42,8 @@ function createWelcome() {
     }
 }
 
-function selectOption(data, body, selectedOptions) {
+function createTemplateObject(data, body, selectedOptions) {
+    // Removes custom template information which causes for in loop to error out. Template info added to object later
     let customTemplate = {template: body.template};
     delete body.template;
 
@@ -52,6 +53,7 @@ function selectOption(data, body, selectedOptions) {
         selectedOptions = {...selectedOptions, ...selected};
         }
     }
+    
     let welcome = createWelcome();
     selectedOptions = {...selectedOptions, ...welcome};
 
@@ -60,7 +62,5 @@ function selectOption(data, body, selectedOptions) {
     }
     return selectedOptions;
 }
-
-createWelcome();
 
 module.exports = router;
